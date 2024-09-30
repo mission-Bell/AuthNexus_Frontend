@@ -30,6 +30,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <MyAppBar />
+        {/* <ThemeProvider theme={theme}>{children}</ThemeProvider> */}
+
         {children}
       </body>
     </html>
