@@ -4,7 +4,6 @@ import { useState } from "react";
 import MyButton from "@/components/elements/Button/MyButton";
 // import MyCard from "@/components/elements/Card/MyCard";
 import { Box, Stack, Card, Button } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 /*
