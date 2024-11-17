@@ -28,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ color: "black" }}
       >
         <MyAppBar />
         {/* <ThemeProvider theme={theme}>{children}</ThemeProvider> */}

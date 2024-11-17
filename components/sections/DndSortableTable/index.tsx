@@ -14,10 +14,23 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@mui/material";
 import SortableItem from "./SortableItem";
 
-const initialItems = ["Item 1", "Item 2", "Item 3", "Item 4"];
-
+//const initialItems = ["Item 1", "Item 2", "Item 3", "Item 4"];
+const initialItems = [
+  { id: 1, name: "Item 1" },
+  { id: 2, name: "Item 2" },
+  { id: 3, name: "Item 3" },
+  { id: 4, name: "Item 4" },
+];
 const DndSortableTable: React.FC = () => {
   const [items, setItems] = React.useState(initialItems);
 
@@ -30,10 +43,10 @@ const DndSortableTable: React.FC = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-
+    console.log(active, over);
     if (active && over && active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.indexOf(active.id as string);
+        const oldIndex = items.indexOf(active.data);
         const newIndex = items.indexOf(over.id as string);
 
         return arrayMove(items, oldIndex, newIndex);
@@ -48,18 +61,20 @@ const DndSortableTable: React.FC = () => {
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((id) => (
-              <SortableItem id={id} itemKey={id} key={id} />
-            ))}
-          </tbody>
-        </table>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Item</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {items.map(({ id, name }) => (
+                <SortableItem id={id} itemKey={name} key={id} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </SortableContext>
     </DndContext>
   );

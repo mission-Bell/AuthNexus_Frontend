@@ -32,79 +32,6 @@ const SamplePage = () => {
       <MyButton />
 
       <div>{amountChange}</div>
-      {/* <Grid container>
-        <Grid
-          size={6}
-          sx={{
-            overflow: "auto",
-            transform: `translateX(${amountChange}px)`,
-          }}
-        ></Grid>
-        <Grid
-          size={6}
-          sx={{
-            overflow: "auto",
-            transform: `translateX(${amountChange}px)`,
-          }}
-        >
-          <Stack
-            direction={"row"}
-            spacing={1}
-            sx={{
-              transform: `translateX(${amountChange}px)`,
-              transition: "transform 0.3s ease-in-out",
-              position: "relative",
-              width: "100px",
-            }}
-          >
-            <Box>
-              <Card
-                sx={{
-                  bgcolor: "blue",
-                  ":hover": {
-                    bgcolor: "gray",
-                  },
-                }}
-              >
-                card1
-              </Card>
-            </Box>
-            <Box>
-              <Card>card2</Card>
-            </Box>
-            <Box>
-              <Card>card3</Card>
-            </Box>
-            <Box>
-              <Card>card4</Card>
-            </Box>
-            <Box>
-              <Card>card5</Card>
-            </Box>
-            <Box>
-              <Card>card6</Card>
-            </Box>
-            <Box>
-              <Card>card7</Card>
-            </Box>
-            <Box>
-              <Card>card8</Card>
-            </Box>
-            <Box>
-              <Card>card9</Card>
-            </Box>
-            <Box>
-              <Card>card10</Card>
-            </Box>
-            <Box>
-              <Card>card11</Card>
-            </Box>
-            <Box>
-              <Card>card12</Card>
-            </Box>
-          </Stack>
-        </Grid>
-      </Grid> */}
       <Box sx={{ width: "1000px", position: "relative" }}>
         <Stack
           direction={"row"}
@@ -113,7 +40,11 @@ const SamplePage = () => {
             transform: `translateX(${amountChange}px)`,
             transition: "transform 0.3s ease-in-out",
             position: "relative",
-            width: "100px",
+            width:{
+              xs: '25%',
+              sm:'50%',
+              md:"100%",
+            } 
           }}
         >
           <Box>
@@ -165,9 +96,9 @@ const SamplePage = () => {
         <Button
           onClick={hidariHandleClick}
           sx={{
-            transform: `translateY(-40px)`,
+            transform: `translateY(-80%)`,
             position: "absolute",
-            left: "20px",
+            left: "2%",
           }}
         >
           <ArrowBackIcon />
@@ -177,7 +108,7 @@ const SamplePage = () => {
           sx={{
             transform: `translateY(-40px)`,
             position: "absolute",
-            right: "20px",
+            right: "50%",
           }}
         >
           <ArrowForwardIcon />

@@ -1,9 +1,10 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { TableRow, TableCell } from "@mui/material";
 
 interface SortableItemProps {
-  id: string;
+  id: number;
   itemKey: string;
 }
 
@@ -17,9 +18,9 @@ const SortableItem = ({ id, itemKey }: SortableItemProps) => {
   };
 
   return (
-    <tr ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <td>{itemKey}</td>
-    </tr>
+    <TableRow ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <TableCell>{itemKey}</TableCell>
+    </TableRow>
   );
 };
 

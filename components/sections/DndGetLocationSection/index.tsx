@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import DndGetLocationDraggableNumber from "@/components/blocks/DndGetLocationDraggableNumber";
 import DndGetLocationDroppableImage from "@/components/blocks/DndGetLocationDroppableImage";
-
+import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
+import Box from "@mui/material/Box";
 /*
  * DndGetLocationSection
  * ドラッグした要素のドロップ位置を取得するサンプル
@@ -16,30 +17,76 @@ import DndGetLocationDroppableImage from "@/components/blocks/DndGetLocationDrop
  * - setDropPosition: ドロップ位置を更新する関数
  * - return: ドラッグアンドドロップのコンテキストを提供するコンポーネント
  */
-const DndGetLocationSection = () => {
-  const [dropPosition, setDropPosition] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
 
+const DndGetLocationSection = ({
+  dndDraggableNumberList,
+  setDndDraggableNumberList,
+  isZoomed,
+}: {
+  dndDraggableNumberList: DndDraggableNumber[];
+  setDndDraggableNumberList: React.Dispatch<
+    React.SetStateAction<DndDraggableNumber[]>
+  >;
+  isZoomed: boolean;
+}) => {
   const handleDragEnd = (event: DragEndEvent) => {
+    console.log(event);
     // ドロップ位置を保存して、次のドラッグの初期位置として使用
     const { x, y } = event.delta;
     // ドロップ位置を更新
     // x,yの値は、現在位置からの差分なので、前回の値に加算する必要がある
     // 例: 前回x=10, y=20の場合、ドラッグした位置がx=4, y=30の場合、
     // x=10+4=14, y=20+30=50ポジションとなる
-    setDropPosition((prev) => ({
-      x: x + prev.x,
-      y: y + prev.y,
-    }));
+    // 配列から特定の値を持つ要素を抽出
+    // const targetItem = dndDraggableNumberList.find(
+    //   (dndDraggableNumber) => dndDraggableNumber.id === event.active.id
+    // );
+    const targetItem = dndDraggableNumberList.find(
+      (dndDraggableNumber) =>
+        `number-${dndDraggableNumber.id}` === event.active.id
+    );
+    // targetItemが見つからない場合は、処理を終了
+    if (!targetItem) {
+      return;
+    }
+    const newItem: DndDraggableNumber = {
+      id: targetItem.id,
+      x: x + targetItem.x,
+      y: y + targetItem.y,
+    };
+    // newItemを使って新しいdndDraggableNumberListを作成
+    // 既存の要素の場合は、新しい位置に更新
+    // 新しい要素の場合は、新しい要素を追加
+    const newDndDraggableNumberList = dndDraggableNumberList.map(
+      (dndDraggableNumber) =>
+        dndDraggableNumber.id === newItem.id ? newItem : dndDraggableNumber
+    );
+    setDndDraggableNumberList(newDndDraggableNumberList);
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <DndGetLocationDraggableNumber dropPosition={dropPosition} />
-      <DndGetLocationDroppableImage />
-    </DndContext>
+    <Box>
+      <DndContext onDragEnd={handleDragEnd}>
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: 100,
+          }}
+        >
+          {dndDraggableNumberList.map((dndDraggableNumber) => (
+            <DndGetLocationDraggableNumber
+              key={dndDraggableNumber.id}
+              id={dndDraggableNumber.id}
+              dropPosition={{
+                x: dndDraggableNumber.x,
+                y: dndDraggableNumber.y,
+              }}
+            />
+          ))}
+        </Box>
+        <DndGetLocationDroppableImage isZoomed={isZoomed} />
+      </DndContext>
+    </Box>
   );
 };
 
