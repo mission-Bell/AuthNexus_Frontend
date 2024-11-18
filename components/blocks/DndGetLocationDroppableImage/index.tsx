@@ -3,13 +3,16 @@ import Image from "next/image";
 import { useDroppable } from "@dnd-kit/core";
 import { Box } from "@mui/material";
 import localImage from "@/public/images/hyomolabo_image.png";
-
+import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
+import DndGetLocationDraggableNumber from "../DndGetLocationDraggableNumber";
 interface DndGetLocationDroppableImageProps {
   isZoomed: boolean;
+  dndDraggableNumberList: DndDraggableNumber[];
 }
 
 const DndGetLocationDroppableImage = ({
   isZoomed,
+  dndDraggableNumberList,
 }: DndGetLocationDroppableImageProps) => {
   const { isOver, setNodeRef } = useDroppable({ id: "droppable" });
 
@@ -22,24 +25,19 @@ const DndGetLocationDroppableImage = ({
   return (
     <Box
       sx={{
-        width: "500px", // 親要素の幅
-        height: "500px", // 親要素の高さ
-        overflow: "hidden", // はみ出した部分を非表示に
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        position: "relative", // 子要素を正しく配置するために設定
-        zIndex: 1, // 子要素を手前に表示
+        width: "100%", // 親要素の幅
+        height: "100%", // 親要素の高さ
       }}
     >
       {/* <Box ref={setNodeRef} style={style}> */}
       <Box
         ref={setNodeRef}
         sx={{
-          display: "inline-block",
+          //display: "inline-block",
           width: "100%",
           height: "100%",
-          overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
-          position: "relative", // 子要素を制御
+          //overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
+          //position: "rative", // 子要素を制御
           zIndex: 1, // 子要素を手前に表示
         }}
       >
@@ -54,9 +52,9 @@ const DndGetLocationDroppableImage = ({
             transformOrigin: "top left", // ズーム時の中心を指定
             cursor: isZoomed ? "grab" : "default", // ズーム時にポインタを変更
             display: "block",
-            zIndex: 1, // 子要素を手前に表示
+            zIndex: 10000, // 子要素を手前に表示
           }}
-        ></Image>
+        />
       </Box>
     </Box>
   );

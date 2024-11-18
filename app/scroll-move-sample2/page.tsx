@@ -2,7 +2,17 @@
 import React, { useState, useRef } from "react";
 import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
 
-const DroppableImage: React.FC = () => {
+const ScrollMoveSample2 = () => {
+  return (
+    <DndContext>
+      <DroppableImage />
+    </DndContext>
+  );
+};
+
+export default ScrollMoveSample2;
+
+const DroppableImage = () => {
   const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 });
   const droppableRef = useRef<HTMLDivElement>(null);
 
@@ -83,10 +93,4 @@ const DraggableNumber: React.FC<{
   );
 };
 
-const App: React.FC = () => (
-  <DndContext>
-    <DroppableImage />
-  </DndContext>
-);
-
-export default App;
+//export default App;

@@ -65,26 +65,51 @@ const DndGetLocationSection = ({
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "inline-block",
+        overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
+        width: "500px",
+        height: "500px",
+
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        //position: "relative", // 子要素を正しく配置するために設定
+        transition: "transform 0.3s ease-in-out",
+        transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+        transformOrigin: "top left", // ズーム時の中心を指定
+      }}
+    >
       <DndContext onDragEnd={handleDragEnd}>
-        <Box
-          sx={{
-            position: "absolute",
-            zIndex: 100,
-          }}
-        >
-          {dndDraggableNumberList.map((dndDraggableNumber) => (
-            <DndGetLocationDraggableNumber
-              key={dndDraggableNumber.id}
-              id={dndDraggableNumber.id}
-              dropPosition={{
-                x: dndDraggableNumber.x,
-                y: dndDraggableNumber.y,
-              }}
+        <Box>
+          <Box
+            sx={{
+              position: "absolute",
+              zIndex: 100,
+            }}
+          >
+            {dndDraggableNumberList.map((dndDraggableNumber) => (
+              <DndGetLocationDraggableNumber
+                key={dndDraggableNumber.id}
+                id={dndDraggableNumber.id}
+                dropPosition={{
+                  x: dndDraggableNumber.x,
+                  y: dndDraggableNumber.y,
+                }}
+              />
+            ))}
+          </Box>
+          <Box
+            sx={{
+              zIndex: 1, // 子要素を手前に表示
+            }}
+          >
+            <DndGetLocationDroppableImage
+              isZoomed={isZoomed}
+              dndDraggableNumberList={dndDraggableNumberList}
             />
-          ))}
+          </Box>
         </Box>
-        <DndGetLocationDroppableImage isZoomed={isZoomed} />
       </DndContext>
     </Box>
   );

@@ -37,7 +37,7 @@ const DndGetLocationDraggableNumber = ({
       style={style}
       {...listeners}
       {...attributes}
-      sx={{ border: "solid 1px green", display: "inline-block" }}
+      sx={{ border: "solid 1px green", display: "inline-block", zIndex: 1000 }}
     >
       <Typography
         sx={{
