@@ -18,6 +18,8 @@ const DndGetLocationTemplate = () => {
     DndDraggableNumber[]
   >([{ id: 1, x: 0, y: 0 }]);
 
+  const [dndTest, setDndTest] = useState<number>(0);
+
   const [isZoomed, setIsZoomed] = useState(false);
 
   const handleAddDraggableNumber = () => {
@@ -33,7 +35,6 @@ const DndGetLocationTemplate = () => {
   // DroppableImageをズームして表示する
   // ドラッグ可能な要素の位置もズームして表示する
   const handleZoomIn = () => {
-    setIsZoomed(true);
     // 全てのドラッグ可能な要素について、x,yを1.5倍にする
     const newDndDraggableNumberList = dndDraggableNumberList.map(
       (dndDraggableNumber) => ({
@@ -43,6 +44,8 @@ const DndGetLocationTemplate = () => {
       })
     );
     setDndDraggableNumberList(newDndDraggableNumberList);
+    setIsZoomed(true);
+    setDndTest(100);
   };
 
   const handleZoomOut = () => {
@@ -56,10 +59,14 @@ const DndGetLocationTemplate = () => {
       })
     );
     setDndDraggableNumberList(newDndDraggableNumberList);
+    setDndTest(0);
   };
 
   return (
     <div>
+      <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
+        template{dndTest}
+      </Box>
       <Grid container spacing={2}>
         <Grid size={6}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -85,6 +92,7 @@ const DndGetLocationTemplate = () => {
             dndDraggableNumberList={dndDraggableNumberList}
             setDndDraggableNumberList={setDndDraggableNumberList}
             isZoomed={isZoomed}
+            dndTest={dndTest}
           />
         </Grid>
         <Grid size={6}>

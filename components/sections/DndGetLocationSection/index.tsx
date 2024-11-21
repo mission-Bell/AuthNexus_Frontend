@@ -22,11 +22,13 @@ const DndGetLocationSection = ({
   dndDraggableNumberList,
   setDndDraggableNumberList,
   isZoomed,
+  dndTest,
 }: {
   dndDraggableNumberList: DndDraggableNumber[];
   setDndDraggableNumberList: React.Dispatch<
     React.SetStateAction<DndDraggableNumber[]>
   >;
+  dndTest: number;
   isZoomed: boolean;
 }) => {
   const handleDragEnd = (event: DragEndEvent) => {
@@ -88,6 +90,10 @@ const DndGetLocationSection = ({
               zIndex: 100,
             }}
           >
+            <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
+              {/* <Box> section{dndTest}</Box> */}
+              section{dndTest}
+            </Box>
             {dndDraggableNumberList.map((dndDraggableNumber) => (
               <DndGetLocationDraggableNumber
                 key={dndDraggableNumber.id}
@@ -96,6 +102,7 @@ const DndGetLocationSection = ({
                   x: dndDraggableNumber.x,
                   y: dndDraggableNumber.y,
                 }}
+                dndTest={dndTest}
               />
             ))}
           </Box>
@@ -107,6 +114,7 @@ const DndGetLocationSection = ({
             <DndGetLocationDroppableImage
               isZoomed={isZoomed}
               dndDraggableNumberList={dndDraggableNumberList}
+              dndTest={dndTest}
             />
           </Box>
         </Box>

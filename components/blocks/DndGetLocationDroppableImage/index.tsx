@@ -8,11 +8,13 @@ import DndGetLocationDraggableNumber from "../DndGetLocationDraggableNumber";
 interface DndGetLocationDroppableImageProps {
   isZoomed: boolean;
   dndDraggableNumberList: DndDraggableNumber[];
+  dndTest: number;
 }
 
 const DndGetLocationDroppableImage = ({
   isZoomed,
   dndDraggableNumberList,
+  dndTest,
 }: DndGetLocationDroppableImageProps) => {
   const { isOver, setNodeRef } = useDroppable({ id: "droppable" });
 
@@ -41,6 +43,10 @@ const DndGetLocationDroppableImage = ({
           zIndex: 1, // 子要素を手前に表示
         }}
       >
+        <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
+          {/* <Box>image{dndTest}</Box> */}
+          image{dndTest}
+        </Box>
         <Image
           src={localImage}
           width={500}
