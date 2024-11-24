@@ -22,6 +22,8 @@ const SamplePage = () => {
   const migiHandleClick = () => {
     setAmountChange(amountChange - 50);
   };
+
+  
   const hidariHandleClick = () => {
     if (amountChange < 0) {
       setAmountChange(amountChange + 50);

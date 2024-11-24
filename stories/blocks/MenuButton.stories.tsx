@@ -16,9 +16,7 @@ export const Delivary: Story = {
   args: {
     icon: <LocalShippingIcon />,
     label: "Delivary",
-    onClick: () => {
-      console.log("test");
-    },
+    link: "/",
   },
 };
 
@@ -26,8 +24,6 @@ export const Maintenance: Story = {
   args: {
     icon: <BuildIcon />,
     label: "Maintenance",
-    onClick: () => {
-      console.log("test");
-    },
+    link: "/",
   },
 };

@@ -16,32 +16,6 @@ const DndGetLocationDraggableNumber = ({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `number-${id}`,
   });
-  const [node, setNode] = useState<React.ReactNode>(null);
-  useEffect(() => {
-    const dndNode = (
-      <Box
-        ref={setNodeRef}
-        style={style}
-        {...listeners}
-        {...attributes}
-        sx={{
-          border: "solid 1px green",
-          display: "inline-block",
-          zIndex: 1000,
-        }}
-      >
-        <Typography
-          sx={{
-            border: "solid 1px blue",
-          }}
-        >
-          {`id: ${id}`}
-          {/* {`x: ${dropPosition.x}, y: ${dropPosition.y}`} */}
-        </Typography>
-      </Box>
-    );
-    setNode(dndNode);
-  }, [dropPosition, id, listeners, attributes, setNodeRef]);
 
   const test = () => {
     transform
@@ -74,20 +48,19 @@ const DndGetLocationDraggableNumber = ({
       style={style}
       {...listeners}
       {...attributes}
-      sx={{ border: "solid 1px green", display: "inline-block", zIndex: 1000 }}
+      sx={{ display: "inline-block", zIndex: 1000 }}
     >
-      <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
+      <Box
+        sx={{
+          position: "absolute",
+          left: `${dndTest}px`,
+          top: `${dndTest}px`,
+          backgroundColor: "red",
+        }}
+      >
         {/* <Box>image{dndTest}</Box> */}
         number {dndTest}
       </Box>
-      <Typography
-        sx={{
-          border: "solid 1px blue",
-        }}
-      >
-        {`id: ${id}`}
-        {/* {`x: ${dropPosition.x}, y: ${dropPosition.y}`} */}
-      </Typography>
     </Box>
   );
 };

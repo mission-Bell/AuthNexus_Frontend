@@ -76,9 +76,9 @@ const DndGetLocationSection = ({
 
         border: "1px solid #ccc",
         borderRadius: "8px",
-        //position: "relative", // 子要素を正しく配置するために設定
+        position: "relative", // 子要素を正しく配置するために設定
         transition: "transform 0.3s ease-in-out",
-        transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+        //transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
         transformOrigin: "top left", // ズーム時の中心を指定
       }}
     >
@@ -90,10 +90,9 @@ const DndGetLocationSection = ({
               zIndex: 100,
             }}
           >
-            <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
-              {/* <Box> section{dndTest}</Box> */}
+            {/* <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
               section{dndTest}
-            </Box>
+            </Box> */}
             {dndDraggableNumberList.map((dndDraggableNumber) => (
               <DndGetLocationDraggableNumber
                 key={dndDraggableNumber.id}

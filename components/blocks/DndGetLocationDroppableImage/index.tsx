@@ -44,7 +44,6 @@ const DndGetLocationDroppableImage = ({
         }}
       >
         <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
-          {/* <Box>image{dndTest}</Box> */}
           image{dndTest}
         </Box>
         <Image

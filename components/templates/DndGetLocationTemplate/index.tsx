@@ -36,37 +36,37 @@ const DndGetLocationTemplate = () => {
   // ドラッグ可能な要素の位置もズームして表示する
   const handleZoomIn = () => {
     // 全てのドラッグ可能な要素について、x,yを1.5倍にする
-    const newDndDraggableNumberList = dndDraggableNumberList.map(
-      (dndDraggableNumber) => ({
-        ...dndDraggableNumber,
-        x: dndDraggableNumber.x * 1.5,
-        y: dndDraggableNumber.y * 1.5,
-      })
-    );
-    setDndDraggableNumberList(newDndDraggableNumberList);
+    // const newDndDraggableNumberList = dndDraggableNumberList.map(
+    //   (dndDraggableNumber) => ({
+    //     ...dndDraggableNumber,
+    //     x: dndDraggableNumber.x * 1.5,
+    //     y: dndDraggableNumber.y * 1.5,
+    //   })
+    // );
+    // setDndDraggableNumberList(newDndDraggableNumberList);
     setIsZoomed(true);
-    setDndTest(100);
+    setDndTest(85);
   };
 
   const handleZoomOut = () => {
     setIsZoomed(false);
     // 全てのドラッグ可能な要素について、x,yを1.5除算する
-    const newDndDraggableNumberList = dndDraggableNumberList.map(
-      (dndDraggableNumber) => ({
-        ...dndDraggableNumber,
-        x: dndDraggableNumber.x / 1.5,
-        y: dndDraggableNumber.y / 1.5,
-      })
-    );
-    setDndDraggableNumberList(newDndDraggableNumberList);
+    // const newDndDraggableNumberList = dndDraggableNumberList.map(
+    //   (dndDraggableNumber) => ({
+    //     ...dndDraggableNumber,
+    //     x: dndDraggableNumber.x / 1.5,
+    //     y: dndDraggableNumber.y / 1.5,
+    //   })
+    // );
+    // setDndDraggableNumberList(newDndDraggableNumberList);
     setDndTest(0);
   };
 
   return (
     <div>
-      <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
+      {/* <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
         template{dndTest}
-      </Box>
+      </Box> */}
       <Grid container spacing={2}>
         <Grid size={6}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
