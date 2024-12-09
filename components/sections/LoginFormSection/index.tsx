@@ -2,23 +2,23 @@ import React from "react";
 import CommonButton from "@/components/elements/CommonButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import { postLogin } from "@/actions/Login";
 
-const LoginFormSection = ({ onClick }: { onClick: () => void }) => {
+const LoginFormSection = ({
+  onClick,
+}: {
+  onClick: (formData: FormData) => Promise<React.JSX.Element>;
+}) => {
   return (
-    <Box component={"form"} action={postLogin}>
-      <Box
-        sx={{
-          mb: {
-            xs: 2,
-            sm: 4,
-            md: 6,
-            lg: 8,
-            xl: 10,
-          },
-        }}
-      >
-        <Box>
+    <Box
+      component={"form"}
+      action={onClick}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Box>
+        <Box p={1}>
           <TextField
             id="outlined-basic"
             type="text"
@@ -27,7 +27,7 @@ const LoginFormSection = ({ onClick }: { onClick: () => void }) => {
             fullWidth
           />
         </Box>
-        <Box>
+        <Box p={1}>
           <TextField
             id="outlined-basic"
             type="password"
@@ -36,10 +36,10 @@ const LoginFormSection = ({ onClick }: { onClick: () => void }) => {
             fullWidth
           />
         </Box>
-      </Box>
 
-      <Box>
-        <CommonButton label="ログイン" type="submit" />
+        <Box p={1}>
+          <CommonButton label="ログイン" type="submit" />
+        </Box>
       </Box>
     </Box>
   );

@@ -19,10 +19,17 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf-viewer/zoom": "^3.12.0",
+    "canvas": "^2.11.2",
     "next": "14.2.11",
+    "pdf-lib": "^1.17.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-draggable": "^4.4.6"
+    "react-draggable": "^4.4.6",
+    "react-hook-form": "^7.54.0",
+    "react-pdf-viewer": "^0.1.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",

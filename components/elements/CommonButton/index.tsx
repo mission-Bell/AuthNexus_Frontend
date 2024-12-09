@@ -13,6 +13,9 @@ const CommonButton = ({ label, onClick, type }: CommonButtonProps) => {
   // buttonのスタイルをかっこいいグレーにする
   const style = {
     backgroundColor: "#333",
+    "&:hover": {
+      backgroundColor: "#444",
+    },
     color: "#fff",
     borderRadius: "5px",
     padding: "10px",

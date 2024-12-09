@@ -2,7 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { useDroppable } from "@dnd-kit/core";
 import { Box } from "@mui/material";
-import localImage from "@/public/images/hyomolabo_image.png";
+// import localImage from "@/public/images/hyomolabo_image.png";
+const localImage = "/app/authnexusf/public/images/sample.pdf";
 import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
 import DndGetLocationDraggableNumber from "../DndGetLocationDraggableNumber";
 interface DndGetLocationDroppableImageProps {
@@ -46,6 +47,7 @@ const DndGetLocationDroppableImage = ({
         <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
           image{dndTest}
         </Box>
+        {/* <embed src={localImage} /> */}
         <Image
           src={localImage}
           width={500}

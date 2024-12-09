@@ -4,12 +4,13 @@ import Box from "@mui/material/Box";
 import LoginFormSection from "@/components/sections/LoginFormSection";
 import logoImage from "@/public/images/hyomolabo_image.png";
 import Image from "next/image";
+import { postLogin } from "@/actions/Login";
 const LoginTemplate = () => {
   const handleLogin = () => {
     console.log("ログインボタンが押されました");
   };
   return (
-    <Box>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box
         sx={{
           display: "flex",
@@ -25,12 +26,13 @@ const LoginTemplate = () => {
             xl: "40%",
           },
         }}
+        p={2}
       >
         <Box>
           <Image src={logoImage} alt="logo" />
         </Box>
         <Box>
-          <LoginFormSection onClick={handleLogin} />
+          <LoginFormSection onClick={postLogin} />
         </Box>
       </Box>
     </Box>

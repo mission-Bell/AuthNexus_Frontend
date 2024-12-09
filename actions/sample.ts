@@ -1,4 +1,5 @@
 "use server";
+import { Inputs } from "@/app/sample/form-sample/page";
 
 export interface Users {
   id: number;
@@ -9,10 +10,30 @@ export interface Users {
   company: string;
   address: string;
 }
+export interface CostomError {
+  code: number;
+  message: string;
+}
+
 export const sample = () => {
   console.log("sample");
 };
 
+export const onSend = async (inputs: Inputs) => {
+  if (inputs.username === "test") {
+    throw new Error("Username is test");
+  } else if (inputs.username === "err") {
+    const error: CostomError = {
+      code: 400,
+      message: "Username is err",
+    };
+    //  throw error;
+    return error;
+  }
+
+  console.log("onSend", inputs);
+  return "onSend";
+};
 export const getData = async () => {
   console.log("getData");
   return { header, userdata };
