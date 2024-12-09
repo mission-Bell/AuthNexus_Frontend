@@ -2,20 +2,24 @@ import React from "react";
 import Image from "next/image";
 import { useDroppable } from "@dnd-kit/core";
 import { Box } from "@mui/material";
-// import localImage from "@/public/images/hyomolabo_image.png";
-const localImage = "/app/authnexusf/public/images/sample.pdf";
+import localImage from "@/public/images/hyomolabo_image.png";
+// const localImage = "/app/authnexusf/public/images/sample.pdf";
 import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
 import DndGetLocationDraggableNumber from "../DndGetLocationDraggableNumber";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+
 interface DndGetLocationDroppableImageProps {
   isZoomed: boolean;
   dndDraggableNumberList: DndDraggableNumber[];
   dndTest: number;
+  isPdf: boolean;
 }
 
 const DndGetLocationDroppableImage = ({
   isZoomed,
   dndDraggableNumberList,
   dndTest,
+  isPdf,
 }: DndGetLocationDroppableImageProps) => {
   const { isOver, setNodeRef } = useDroppable({ id: "droppable" });
 
@@ -47,21 +51,39 @@ const DndGetLocationDroppableImage = ({
         <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
           image{dndTest}
         </Box>
-        {/* <embed src={localImage} /> */}
-        <Image
-          src={localImage}
-          width={500}
-          height={500}
-          alt=""
-          style={{
-            transition: "transform 0.3s ease-in-out",
-            transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
-            transformOrigin: "top left", // ズーム時の中心を指定
-            cursor: isZoomed ? "grab" : "default", // ズーム時にポインタを変更
-            display: "block",
-            zIndex: 10000, // 子要素を手前に表示
-          }}
-        />
+        {isPdf ? (
+          <Box
+            sx={{
+              transition: "transform 0.3s ease-in-out",
+              transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+              transformOrigin: "top left", // ズーム時の中心を指定
+              cursor: isZoomed ? "grab" : "default", // ズーム時にポインタを変更
+              display: "block",
+              zIndex: 10000, // 子要素を手前に表示
+
+            }}>
+            <Worker workerUrl={`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`}>
+              <Viewer fileUrl={'/sample.pdf'} />
+            </Worker>
+          </Box>
+        ) : (
+          <Image
+            src={localImage}
+            width={500}
+            height={500}
+            alt=""
+            style={{
+              transition: "transform 0.3s ease-in-out",
+              transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+              transformOrigin: "top left", // ズーム時の中心を指定
+              cursor: isZoomed ? "grab" : "default", // ズーム時にポインタを変更
+              display: "block",
+              zIndex: 10000, // 子要素を手前に表示
+            }}
+          />
+
+        )
+        }
       </Box>
     </Box>
   );

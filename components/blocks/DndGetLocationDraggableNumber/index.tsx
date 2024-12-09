@@ -21,8 +21,8 @@ const DndGetLocationDraggableNumber = ({
     transform
       ? console.log("test transform", transform)
       : dropPosition
-      ? console.log("test dropPosition", dropPosition)
-      : console.log("test undefined");
+        ? console.log("test dropPosition", dropPosition)
+        : console.log("test undefined");
   };
 
   console.log("test", test());
@@ -31,17 +31,16 @@ const DndGetLocationDraggableNumber = ({
   // ドロップ後のスタイルがない場合、ドロップ後位置へ要素が移動しない
   const style = transform
     ? {
-        transform: `translate3d(${transform.x + dropPosition.x}px, ${
-          transform.y + dropPosition.y
+      transform: `translate3d(${transform.x + dropPosition.x}px, ${transform.y + dropPosition.y
         }px, 0)`,
-        zIndex: 1000,
-      }
+      zIndex: 1000,
+    }
     : dropPosition
-    ? {
+      ? {
         transform: `translate(${dropPosition.x}px, ${dropPosition.y}px, 0)`,
         zIndex: 1000,
       }
-    : undefined;
+      : undefined;
   return (
     <Box
       ref={setNodeRef}

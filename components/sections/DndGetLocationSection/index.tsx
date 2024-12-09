@@ -23,6 +23,7 @@ const DndGetLocationSection = ({
   setDndDraggableNumberList,
   isZoomed,
   dndTest,
+  isPdf
 }: {
   dndDraggableNumberList: DndDraggableNumber[];
   setDndDraggableNumberList: React.Dispatch<
@@ -30,6 +31,7 @@ const DndGetLocationSection = ({
   >;
   dndTest: number;
   isZoomed: boolean;
+  isPdf: boolean;
 }) => {
   const handleDragEnd = (event: DragEndEvent) => {
     console.log(event);
@@ -114,6 +116,7 @@ const DndGetLocationSection = ({
               isZoomed={isZoomed}
               dndDraggableNumberList={dndDraggableNumberList}
               dndTest={dndTest}
+              isPdf={isPdf}
             />
           </Box>
         </Box>

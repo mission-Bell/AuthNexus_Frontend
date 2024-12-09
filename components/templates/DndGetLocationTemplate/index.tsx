@@ -13,10 +13,10 @@ export interface DndDraggableNumber {
   y: number;
 }
 
-const DndGetLocationTemplate = () => {
+const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberList: DndDraggableNumber[] }) => {
   const [dndDraggableNumberList, setDndDraggableNumberList] = useState<
     DndDraggableNumber[]
-  >([{ id: 1, x: 0, y: 0 }]);
+  >(numberList);
 
   const [dndTest, setDndTest] = useState<number>(0);
 
@@ -93,6 +93,7 @@ const DndGetLocationTemplate = () => {
             setDndDraggableNumberList={setDndDraggableNumberList}
             isZoomed={isZoomed}
             dndTest={dndTest}
+            isPdf={isPdf}
           />
         </Grid>
         <Grid size={6}>

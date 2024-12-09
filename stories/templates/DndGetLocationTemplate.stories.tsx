@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import BuildIcon from "@mui/icons-material/Build";
-import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+
 
 import DndGetLocationTemplate from "@/components/templates/DndGetLocationTemplate";
 
@@ -14,45 +11,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-interface MenuButtonProps {
-  icon: React.ReactNode;
-  label: string;
-  onClick: () => void;
-}
-
-const menuButtonList: MenuButtonProps[] = [
-  {
-    icon: <LocalShippingIcon />,
-    label: "Delivary",
-    onClick: () => {
-      console.log("test");
-    },
-  },
-  {
-    icon: <BuildIcon />,
-    label: "Maintenance",
-    onClick: () => {
-      console.log("test");
-    },
-  },
-  {
-    icon: <LocalPizzaIcon />,
-    label: "Pizza",
-    onClick: () => {
-      console.log("test");
-    },
-  },
-  {
-    icon: <LocalHospitalIcon />,
-    label: "Hospital",
-    onClick: () => {
-      console.log("test");
-    },
-  },
+const initNumberList = [
+  { id: 1, x: 10, y: 20 },
+  { id: 2, x: 30, y: 40 },
+  { id: 3, x: 50, y: 60 },
 ];
 
-export const Ver1: Story = {
+
+
+
+export const Image: Story = {
   args: {
-    menuButtonList,
+    isPdf: false,
+    numberList: initNumberList
+  },
+};
+
+export const Pdf: Story = {
+  args: {
+    isPdf: true,
+    numberList: initNumberList
   },
 };
