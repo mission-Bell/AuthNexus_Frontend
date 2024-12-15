@@ -1,5 +1,6 @@
 "use server";
 import { Inputs } from "@/app/sample/form-sample/page";
+import {SamplePostValues} from '@/components/templates/SampleDataSendTemplate/index'
 
 export interface Users {
   id: number;
@@ -18,6 +19,24 @@ export interface CostomError {
 export const sample = () => {
   console.log("sample");
 };
+export const postDataSample = async (postValues: SamplePostValues) => {
+  // BEにデータを送信する処理
+  // 成功した場合、成功メッセージを返す
+  // 失敗した場合、エラーメッセージを返す
+  console.log("postDataSample", postValues);
+
+  try {
+    const res = await fetch("https://localhost/posts")
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    const err: CostomError = {
+      code: 400,
+      message: "error",
+    };
+    return err;
+  }
+}
 
 export const onSend = async (inputs: Inputs) => {
   if (inputs.username === "test") {

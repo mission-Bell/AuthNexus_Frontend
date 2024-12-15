@@ -1,64 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface DraggableNumberProps {
   dropPosition: { x: number; y: number };
   id: number;
-  dndTest: number;
+  zoomNum: number;
 }
 
 const DndGetLocationDraggableNumber = ({
   dropPosition,
   id,
-  dndTest,
+  zoomNum
 }: DraggableNumberProps) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `number-${id}`,
   });
 
-  const test = () => {
-    transform
-      ? console.log("test transform", transform)
-      : dropPosition
-        ? console.log("test dropPosition", dropPosition)
-        : console.log("test undefined");
-  };
-
-  console.log("test", test());
-  // ドラッグ中のスタイル(transform ?)と、ドロップ後のスタイル(dropPosition ?)を用意しておく必要がある
-  // ドラッグ中のスタイルがない場合、ドラッグ中のアニメーションがなくなる
-  // ドロップ後のスタイルがない場合、ドロップ後位置へ要素が移動しない
-  const style = transform
-    ? {
-      transform: `translate3d(${transform.x + dropPosition.x}px, ${transform.y + dropPosition.y
-        }px, 0)`,
-      zIndex: 1000,
-    }
-    : dropPosition
-      ? {
-        transform: `translate(${dropPosition.x}px, ${dropPosition.y}px, 0)`,
-        zIndex: 1000,
-      }
-      : undefined;
   return (
     <Box
       ref={setNodeRef}
-      style={style}
       {...listeners}
       {...attributes}
-      sx={{ display: "inline-block", zIndex: 1000 }}
+      sx={{ display: "inline-block", zIndex: 1000, poxition: 'fixed' }}
     >
       <Box
+        // 画面上の表示位置は、position: 'absolute' で指定する
+        // 右上からの位置で指定する
+        // zoom、zoom outの場合は、zoomNumを掛ける
         sx={{
-          position: "absolute",
-          left: `${dndTest}px`,
-          top: `${dndTest}px`,
-          backgroundColor: "red",
+          position: 'absolute',
+          left: `${dropPosition.x * zoomNum}px`,
+          top: `${dropPosition.y * zoomNum}px`,
+          backgroundColor: 'red',
+          opacity: isDragging ? 0.5 : 1,
         }}
       >
-        {/* <Box>image{dndTest}</Box> */}
-        number {dndTest}
+        number {id}
       </Box>
     </Box>
   );

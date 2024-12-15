@@ -1,5 +1,5 @@
 import React from "react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, UniqueIdentifier, useSensor, MouseSensor } from "@dnd-kit/core";
 import DndGetLocationDraggableNumber from "@/components/blocks/DndGetLocationDraggableNumber";
 import DndGetLocationDroppableImage from "@/components/blocks/DndGetLocationDroppableImage";
 import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
@@ -17,24 +17,29 @@ import Box from "@mui/material/Box";
  * - setDropPosition: ドロップ位置を更新する関数
  * - return: ドラッグアンドドロップのコンテキストを提供するコンポーネント
  */
-
 const DndGetLocationSection = ({
   dndDraggableNumberList,
   setDndDraggableNumberList,
   isZoomed,
-  dndTest,
+  zoomNum,
   isPdf
 }: {
   dndDraggableNumberList: DndDraggableNumber[];
   setDndDraggableNumberList: React.Dispatch<
     React.SetStateAction<DndDraggableNumber[]>
   >;
-  dndTest: number;
+  zoomNum: number;
   isZoomed: boolean;
   isPdf: boolean;
 }) => {
+
+  // ドラッグ中の要素のIDを保持。DragOverlayでドラッグ中の要素の位置を取得するために使用
+  const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null);
+
+  // ドラッグ終了時の処理
   const handleDragEnd = (event: DragEndEvent) => {
-    console.log(event);
+    // ドラッグ中の要素を初期化
+    setActiveId(null);
     // ドロップ位置を保存して、次のドラッグの初期位置として使用
     const { x, y } = event.delta;
     // ドロップ位置を更新
@@ -53,6 +58,7 @@ const DndGetLocationSection = ({
     if (!targetItem) {
       return;
     }
+    // x,y: 移動距離を元の値に加算しであたらしい位置を計算
     const newItem: DndDraggableNumber = {
       id: targetItem.id,
       x: x + targetItem.x,
@@ -67,6 +73,13 @@ const DndGetLocationSection = ({
     );
     setDndDraggableNumberList(newDndDraggableNumberList);
   };
+
+  // ドラッグ開始時の処理
+  const handleDragStart = (event: DragStartEvent) => {
+    // ドラッグ中の要素のIDを更新
+    setActiveId(event.active.id);
+
+  }
 
   return (
     <Box
@@ -84,41 +97,64 @@ const DndGetLocationSection = ({
         transformOrigin: "top left", // ズーム時の中心を指定
       }}
     >
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} >
         <Box>
           <Box
             sx={{
               position: "absolute",
-              zIndex: 100,
+              zIndex: 100, // 子要素を手前に表示するために必要
             }}
           >
-            {/* <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
-              section{dndTest}
-            </Box> */}
-            {dndDraggableNumberList.map((dndDraggableNumber) => (
-              <DndGetLocationDraggableNumber
-                key={dndDraggableNumber.id}
-                id={dndDraggableNumber.id}
-                dropPosition={{
-                  x: dndDraggableNumber.x,
-                  y: dndDraggableNumber.y,
-                }}
-                dndTest={dndTest}
-              />
+            {dndDraggableNumberList.map((dndDraggableNumber, index) => (
+              <Box key={index}>
+                <DndGetLocationDraggableNumber
+                  key={dndDraggableNumber.id}
+                  id={dndDraggableNumber.id}
+                  dropPosition={{
+                    x: dndDraggableNumber.x,
+                    y: dndDraggableNumber.y,
+                  }}
+                  zoomNum={zoomNum}
+                />
+              </Box>
             ))}
           </Box>
-          <Box
-            sx={{
-              zIndex: 1, // 子要素を手前に表示
-            }}
-          >
+          <Box>
             <DndGetLocationDroppableImage
               isZoomed={isZoomed}
-              dndDraggableNumberList={dndDraggableNumberList}
-              dndTest={dndTest}
               isPdf={isPdf}
             />
           </Box>
+          {/* ドロップ後のアニメーションを無効化 */}
+          <DragOverlay dropAnimation={null}  >
+            {/* activeIdに一致する要素をレンダリング */}
+            {activeId && (
+              <DndGetLocationDraggableNumber
+                id={parseInt(activeId.toString().replace('number-', ''), 10)}
+                zoomNum={zoomNum}
+                dropPosition={{
+                  x: dndDraggableNumberList.find(
+                    (dndDraggableNumber) =>
+                      `number-${dndDraggableNumber.id}` === activeId
+                  )?.x || 0,
+                  // activeIdに一致する要素の位置を取得
+                  // todo: 長いので関数化する必要あり
+                  y: dndDraggableNumberList.indexOf(
+                    dndDraggableNumberList.find(
+                      (dndDraggableNumber) =>
+                        `number-${dndDraggableNumber.id}` === activeId
+                      // overlayする要素について、クリック時に少し下にズレる。
+                      // ズレは、配列要素が大きくなるほど大きくなるため、24を掛けて調整
+                    ) || { id: 0, x: 0, y: 0 }) * -24 + (dndDraggableNumberList.find(
+                      (dndDraggableNumber) =>
+                        `number-${dndDraggableNumber.id}` === activeId
+                    )?.y || 0)
+
+                }}
+              />
+            )}
+          </DragOverlay>
+
         </Box>
       </DndContext>
     </Box>

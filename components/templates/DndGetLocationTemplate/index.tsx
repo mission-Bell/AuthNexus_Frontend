@@ -11,6 +11,7 @@ export interface DndDraggableNumber {
   id: number;
   x: number;
   y: number;
+  zoomNum?: number;
 }
 
 const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberList: DndDraggableNumber[] }) => {
@@ -18,7 +19,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
     DndDraggableNumber[]
   >(numberList);
 
-  const [dndTest, setDndTest] = useState<number>(0);
+  const [zoomNum, setZoomNum] = useState<number>(1);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -26,7 +27,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
     const newId = dndDraggableNumberList.length + 1;
     const newDndDraggableNumberList = [
       ...dndDraggableNumberList,
-      { id: newId, x: 10, y: 20 },
+      { id: newId, x: 10, y: 20, isFirst: true },
     ];
     setDndDraggableNumberList(newDndDraggableNumberList);
   };
@@ -45,7 +46,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
     // );
     // setDndDraggableNumberList(newDndDraggableNumberList);
     setIsZoomed(true);
-    setDndTest(85);
+    setZoomNum(1.5);
   };
 
   const handleZoomOut = () => {
@@ -59,7 +60,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
     //   })
     // );
     // setDndDraggableNumberList(newDndDraggableNumberList);
-    setDndTest(0);
+    setZoomNum(1);
   };
 
   return (
@@ -92,7 +93,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
             dndDraggableNumberList={dndDraggableNumberList}
             setDndDraggableNumberList={setDndDraggableNumberList}
             isZoomed={isZoomed}
-            dndTest={dndTest}
+            zoomNum={zoomNum}
             isPdf={isPdf}
           />
         </Grid>

@@ -5,11 +5,11 @@ import Box from "@mui/material/Box";
 
 interface CommonButtonProps {
   label: string;
-  onClick?: () => void;
+  onClick?: (...arg: any) => void;
   type: "button" | "submit" | "reset";
 }
 
-const CommonButton = ({ label, onClick, type }: CommonButtonProps) => {
+const CommonButton = ({ label, onClick = () => { }, type }: CommonButtonProps) => {
   // buttonのスタイルをかっこいいグレーにする
   const style = {
     backgroundColor: "#333",
@@ -24,13 +24,13 @@ const CommonButton = ({ label, onClick, type }: CommonButtonProps) => {
   return (
     <Box sx={{ width: "100%" }}>
       <Button
-        onClick={onClick ? () => onClick() : undefined}
+        onClick={onClick}
         sx={style}
         type={type}
       >
         <Typography>{label}</Typography>
       </Button>
-    </Box>
+    </Box >
   );
 };
 

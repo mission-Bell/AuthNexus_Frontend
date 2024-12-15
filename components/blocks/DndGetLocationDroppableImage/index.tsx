@@ -10,25 +10,14 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 interface DndGetLocationDroppableImageProps {
   isZoomed: boolean;
-  dndDraggableNumberList: DndDraggableNumber[];
-  dndTest: number;
   isPdf: boolean;
 }
 
 const DndGetLocationDroppableImage = ({
   isZoomed,
-  dndDraggableNumberList,
-  dndTest,
   isPdf,
 }: DndGetLocationDroppableImageProps) => {
   const { isOver, setNodeRef } = useDroppable({ id: "droppable" });
-
-  const style = {
-    color: isOver ? "green" : undefined,
-    border: "solid 1px",
-    width: "500px",
-    height: "500px",
-  };
   return (
     <Box
       sx={{
@@ -48,9 +37,6 @@ const DndGetLocationDroppableImage = ({
           zIndex: 1, // 子要素を手前に表示
         }}
       >
-        <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
-          image{dndTest}
-        </Box>
         {isPdf ? (
           <Box
             sx={{
