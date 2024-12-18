@@ -11,6 +11,7 @@ import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
 import FormHelperText from '@mui/material/FormHelperText'
 import { postDataSample } from '@/actions/sample';
+import { DataGrid } from '@mui/x-data-grid'
 export interface SamplePostValues {
     name: string
     age: number
@@ -23,7 +24,7 @@ export interface SamplePostValues {
 }
 const SampleDataSendTemplate = () => {
 
-    const { control, handleSubmit, watch, formState: { errors } } = useForm<SamplePostValues>({
+    const { control, handleSubmit, watch, formState: { errors }, register, getValues } = useForm<SamplePostValues>({
         defaultValues: {
             name: '',
             age: 0,
@@ -36,8 +37,9 @@ const SampleDataSendTemplate = () => {
         name: 'phones'
     })
 
-    const [errorMsg, setErrorMsg] = React.useState<string | null>(null)
+    const [phoneList, setPhoneList] = React.useState<{ phone: string, corporation: string, price: number }[]>([])
 
+    const [errorMsg, setErrorMsg] = React.useState<string | null>(null)
 
     const handleSendData = async (data: SamplePostValues) => {
         const plainData = JSON.parse(JSON.stringify(data))
@@ -57,6 +59,7 @@ const SampleDataSendTemplate = () => {
                     <Controller
                         name={`phones.${index}.phone`}
                         control={control}
+                        defaultValue={phone.phone}
                         rules={{
                             required: true,
                             // 10文字以上の場合エラー
@@ -78,7 +81,17 @@ const SampleDataSendTemplate = () => {
 
                         }}
                         render={({ field }) => (
-                            <TextFiled {...field} />
+                            <TextFiled {...field} onChange={(event) => {
+                                field.onChange(event)
+                                console.log('new value', event.target.value)
+                                console.log('old value', field.value)
+                                setPhoneList((prev) => {
+                                    [...prev,
+                                    getValues()['phones'][index]]
+                                }
+                                )
+
+                            }} />
                         )}
                     />
                     <FormHelperText error>
@@ -89,7 +102,6 @@ const SampleDataSendTemplate = () => {
                 </Box>
                 ,
                 <Box>
-
                     <Controller
                         name={`phones.${index}.corporation`}
                         control={control}
@@ -166,7 +178,7 @@ const SampleDataSendTemplate = () => {
             {errorMsg && <Alert severity='error'>{errorMsg}</Alert>}
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box width={100} p={1} whiteSpace={'nowrap'}>
-                    <CommonButton label='add row' type='button' onClick={append} />
+                    <CommonButton label='add row' type='button' onClick={() => append({ phone: '', corporation: '', price: 0 })} />
                 </Box>
                 <Box width={100} p={1} whiteSpace={'nowrap'}>
                     <CommonButton label='remove row' type='button' onClick={remove} />
@@ -226,6 +238,19 @@ const SampleDataSendTemplate = () => {
                     />
                 </Box>
             </Box>
+            <DataGrid
+                checkboxSelection
+                rows={[
+                    { id: 1, phone: '090-1234-5678', corporation: 'docomo', price: 1000 },
+                    { id: 2, phone: '080-1234-5678', corporation: 'au', price: 2000 },
+                    { id: 3, phone: '070-1234-5678', corporation: 'softbank', price: 3000 }
+                ]}
+                columns={[
+                    { field: 'phone', headerName: 'Phone', width: 150 },
+                    { field: 'corporation', headerName: 'Corporation', width: 150 },
+                    { field: 'price', headerName: 'Price', width: 150 }
+                ]}
+            />
         </Box>
 
     )
