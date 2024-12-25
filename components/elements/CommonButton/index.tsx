@@ -27,6 +27,7 @@ const CommonButton = ({ label, onClick = () => { }, type }: CommonButtonProps) =
         onClick={onClick}
         sx={style}
         type={type}
+        name={label}
       >
         <Typography>{label}</Typography>
       </Button>

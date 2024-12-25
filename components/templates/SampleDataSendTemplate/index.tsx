@@ -4,18 +4,21 @@ import Box from '@mui/material/Box'
 import CommonButton from '@/components/elements/CommonButton'
 import CommonAutoComplete from '@/components/elements/CommonAutoCopmlete'
 import CommonTable from '@/components/sections/CommonTable'
-import TextFiled from '@mui/material/TextField'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { useForm, Controller, useFieldArray } from 'react-hook-form'
+import { useForm, Controller, useFieldArray, set } from 'react-hook-form'
 import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
 import FormHelperText from '@mui/material/FormHelperText'
 import { postDataSample } from '@/actions/sample';
 import { DataGrid } from '@mui/x-data-grid'
+import { Select } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem'
 export interface SamplePostValues {
     name: string
     age: number
     address: string
+    sexId: string
     phones: {
         phone: string
         corporation: string
@@ -37,7 +40,6 @@ const SampleDataSendTemplate = () => {
         name: 'phones'
     })
 
-    const [phoneList, setPhoneList] = React.useState<{ phone: string, corporation: string, price: number }[]>([])
 
     const [errorMsg, setErrorMsg] = React.useState<string | null>(null)
 
@@ -81,17 +83,7 @@ const SampleDataSendTemplate = () => {
 
                         }}
                         render={({ field }) => (
-                            <TextFiled {...field} onChange={(event) => {
-                                field.onChange(event)
-                                console.log('new value', event.target.value)
-                                console.log('old value', field.value)
-                                setPhoneList((prev) => {
-                                    [...prev,
-                                    getValues()['phones'][index]]
-                                }
-                                )
-
-                            }} />
+                            <TextField {...field} />
                         )}
                     />
                     <FormHelperText error>
@@ -123,7 +115,7 @@ const SampleDataSendTemplate = () => {
                             }
                         }
                         render={({ field }) => (
-                            <TextFiled {...field} />
+                            <TextField {...field} />
                         )}
                     />
                     <FormHelperText error>
@@ -160,7 +152,7 @@ const SampleDataSendTemplate = () => {
                         }
                     }
                     render={({ field }) => (
-                        <TextFiled {...field} type='number' />
+                        <TextField {...field} type='number' />
                     )}
                 />
             ]
@@ -175,7 +167,7 @@ const SampleDataSendTemplate = () => {
     }
     return (
         <Box component={'form'} onSubmit={handleSubmit((data) => handleSendData(data))}>
-            {errorMsg && <Alert severity='error'>{errorMsg}</Alert>}
+            {errorMsg && <Alert severity='error' id='error'>{errorMsg}</Alert>}
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box width={100} p={1} whiteSpace={'nowrap'}>
                     <CommonButton label='add row' type='button' onClick={() => append({ phone: '', corporation: '', price: 0 })} />
@@ -194,13 +186,39 @@ const SampleDataSendTemplate = () => {
                 <Box width={1000} >
                     <Box>
                         <Box>
+                            <Box>
+                                <Select
+                                    aria-label='sexId'
+                                    defaultValue='0'
+                                >
+                                    <MenuItem value={'0'} aria-label='0'>男</MenuItem>
+                                    <MenuItem value={'1'} aria-label='1'>女</MenuItem>
+
+                                </Select>
+                                {/* <Controller
+                                    name='sexId'
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            aria-label='sexId'
+                                            defaultValue='0'
+                                        >
+                                            <MenuItem value={'0'}>男</MenuItem>
+                                            <MenuItem value={'1'}>女</MenuItem>
+
+                                        </Select>
+                                    )}
+                                /> */}
+
+                            </Box>
                             <Controller
                                 name='name'
                                 control={control}
                                 render={({ field }) => (
-                                    <TextFiled
-                                        label='名前'
+                                    <TextField
                                         {...field}
+                                        aria-label='name'
                                     />
                                 )}
                             />
@@ -210,9 +228,9 @@ const SampleDataSendTemplate = () => {
                                 name='age'
                                 control={control}
                                 render={({ field }) => (
-                                    <TextFiled
+                                    <TextField
                                         {...field}
-                                        label='年齢'
+                                        aria-label='age'
                                     />
                                 )}
                             />
@@ -222,9 +240,9 @@ const SampleDataSendTemplate = () => {
                                 name='address'
                                 control={control}
                                 render={({ field }) => (
-                                    <TextFiled
+                                    <TextField
                                         {...field}
-                                        label='住所'
+                                        aria-label='address'
                                     />
                                 )}
                             />
@@ -238,19 +256,7 @@ const SampleDataSendTemplate = () => {
                     />
                 </Box>
             </Box>
-            <DataGrid
-                checkboxSelection
-                rows={[
-                    { id: 1, phone: '090-1234-5678', corporation: 'docomo', price: 1000 },
-                    { id: 2, phone: '080-1234-5678', corporation: 'au', price: 2000 },
-                    { id: 3, phone: '070-1234-5678', corporation: 'softbank', price: 3000 }
-                ]}
-                columns={[
-                    { field: 'phone', headerName: 'Phone', width: 150 },
-                    { field: 'corporation', headerName: 'Corporation', width: 150 },
-                    { field: 'price', headerName: 'Price', width: 150 }
-                ]}
-            />
+
         </Box>
 
     )
