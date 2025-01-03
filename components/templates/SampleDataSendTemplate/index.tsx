@@ -195,6 +195,14 @@ const SampleDataSendTemplate = () => {
                                     <MenuItem value={'1'} aria-label='1'>女</MenuItem>
 
                                 </Select>
+                                <Select
+                                    aria-label='ageId'
+                                    defaultValue='0'
+                                >
+                                    <MenuItem value={'0'} aria-label='0'>一歳</MenuItem>
+                                    <MenuItem value={'1'} aria-label='1'>二歳</MenuItem>
+
+                                </Select>
                                 {/* <Controller
                                     name='sexId'
                                     control={control}

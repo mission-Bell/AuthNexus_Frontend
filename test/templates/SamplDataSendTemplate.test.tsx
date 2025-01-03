@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import SampleDataSendTemplate from "../../components/templates/SampleDataSendTemplate";
 import { postDataSample } from "@/actions/sample";
 import userEvent from "@testing-library/user-event";
@@ -35,24 +35,40 @@ describe("SampleDataSendTemplate", () => {
     const ageInput = screen.getByLabelText("age");
     const addressInput = screen.getByLabelText("address");
     const sexIdSelect = screen.getByLabelText("sexId");
-    screen.findByRole('button', { name: 'sexId \u{200B}' })
+    const sexIdComboBox = within(sexIdSelect).getByRole('combobox');
+    // selectのaria-labelを取得
+    const ageId = screen.getByLabelText("ageId");
+    // withinで配下のcomboboxを取得
+    // muiのselectはdivで囲まれているため、aria-label→comboboxで取得
+    const ageIdComboBox = within(ageId).getByRole('combobox');
 
+    // 初期値が正しいか確認
+    expect(sexIdSelect).toHaveTextContent('男');
+    expect(ageId).toHaveTextContent('一歳');
+
+    // console.log(sexIdButton);
     await userEvent.type(nameInput, "test");
     await userEvent.type(ageInput, "10");
     await userEvent.type(addressInput, "test");
-    // 初期値が正しいか確認
-    expect(sexIdSelect).toHaveTextContent('男');
 
     // Selectをクリックしてメニューを開く
-    await userEvent.click(sexIdSelect);
+    // コンンボボックスをクリックしてoptionを表示させる
+    // optionはクリックするまでdomには存在しない
+    await userEvent.click(sexIdComboBox);
 
     // 女の値をクリックして選択
+    // console.log(sexIdSelect);
     const menuItem = screen.getAllByRole('option');
-
     await userEvent.click(menuItem[1]);
+
+    await userEvent.click(ageIdComboBox);
+    const ageIdItem = screen.getAllByRole('option');
+    await userEvent.click(ageIdItem[1]);
+
 
     // 値が変更されたか確認
     expect(sexIdSelect).toHaveTextContent('女');
+    expect(ageId).toHaveTextContent('二歳');
     await userEvent.click(screen.getByText("send"));
   });
 
