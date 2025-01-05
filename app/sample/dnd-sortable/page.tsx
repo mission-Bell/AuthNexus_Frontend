@@ -15,6 +15,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
 interface Item {
   id: string;
@@ -60,43 +62,38 @@ const SortableItem = ({
   };
 
   const dragHandleStyle = {
-    cursor: "grab",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "32px",
-    height: "32px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    borderRadius: "50%",
-    marginRight: "8px",
-    fontWeight: "bold",
-    fontSize: "16px",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    // cursor: "grab",
+    // display: "flex",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // width: "32px",
+    // height: "32px",
+    // backgroundColor: "#007bff",
+    // color: "#fff",
+    // borderRadius: "50%",
+    // marginRight: "8px",
+    // fontWeight: "bold",
+    // fontSize: "16px",
+    // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
-      <div
+    <Box ref={setNodeRef} style={style}>
+      <Box
         {...attributes}
         {...listeners}
         style={dragHandleStyle}
         title="Drag to reorder"
       >
         {order}
-      </div>
+      </Box>
       <Controller
         name={`items.${index}.name`}
         control={control}
         render={({ field }) => (
-          <input
+          <TextField
             {...field}
-            style={{
-              padding: "4px",
-              flexGrow: 1,
-              marginRight: "8px",
-            }}
-            placeholder="Item name"
+
           />
         )}
       />
@@ -113,7 +110,7 @@ const SortableItem = ({
       >
         Delete
       </button>
-    </div>
+    </Box>
   );
 };
 
@@ -136,12 +133,12 @@ const Home = () => {
 
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const handleDragStart = (event: DragStartEvent) => {
-    const id = event.active.id;
-    if (typeof id === "string") {
-      setActiveId(id);
-    }
-  };
+  // const handleDragStart = (event: DragStartEvent) => {
+  //   const id = event.active.id;
+  //   if (typeof id === "string") {
+  //     setActiveId(id);
+  //   }
+  // };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -153,11 +150,11 @@ const Home = () => {
       move(oldIndex, newIndex);
 
       // Update order values
-      const updatedItems = getValues("items").map((item, index) => ({
-        ...item,
-        order: index + 1,
-      }));
-      setValue("items", updatedItems);
+      // const updatedItems = getValues("items").map((item, index) => ({
+      //   ...item,
+      //   order: index + 1,
+      // }));
+      // setValue("items", updatedItems);
     }
   };
 
@@ -166,15 +163,15 @@ const Home = () => {
     // Server Actions への送信処理をここに記述
   };
 
-  const activeItem = activeId
-    ? fields.find((item) => item.id === activeId)
-    : null;
+  // const activeItem = activeId
+  //   ? fields.find((item) => item.id === activeId)
+  //   : null;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "400px", margin: "0 auto" }}>
+    <Box component={'form'} onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "400px", margin: "0 auto" }}>
       <DndContext
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
+        // collisionDetection={closestCenter}
+        // onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <SortableContext
@@ -187,15 +184,15 @@ const Home = () => {
               id={field.id}
               order={index + 1}
               control={control}
-              index={index}
+              index={fdfd}
               remove={remove}
               isDragging={activeId === field.id}
             />
           ))}
         </SortableContext>
         <DragOverlay>
-          {activeItem ? (
-            <div
+          {/* {activeItem ? (
+            <Box
               style={{
                 padding: "16px",
                 backgroundColor: "#e0e0e0",
@@ -205,8 +202,9 @@ const Home = () => {
               }}
             >
               <strong>{activeItem.order}</strong> - {activeItem.name}
-            </div>
-          ) : null}
+            </Box>
+          ) : null} */}
+          {null}
         </DragOverlay>
       </DndContext>
       <button
@@ -245,7 +243,7 @@ const Home = () => {
       >
         Send
       </button>
-    </form>
+    </Box>
   );
 };
 
