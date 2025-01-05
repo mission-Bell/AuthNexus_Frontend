@@ -1,5 +1,5 @@
 import React from "react";
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, UniqueIdentifier, useSensor, MouseSensor } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, UniqueIdentifier, useSensor, MouseSensor, rectIntersection } from "@dnd-kit/core";
 import DndGetLocationDraggableNumber from "@/components/blocks/DndGetLocationDraggableNumber";
 import DndGetLocationDroppableImage from "@/components/blocks/DndGetLocationDroppableImage";
 import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
@@ -40,6 +40,11 @@ const DndGetLocationSection = ({
   const handleDragEnd = (event: DragEndEvent) => {
     // ドラッグ中の要素を初期化
     setActiveId(null);
+    console.log('event', event);
+    // ドロップした位置がドロップ可能要素でない場合は更新しない。
+    if (!event.over) {
+      return;
+    }
     // ドロップ位置を保存して、次のドラッグの初期位置として使用
     const { x, y } = event.delta;
     // ドロップ位置を更新
@@ -82,83 +87,99 @@ const DndGetLocationSection = ({
   }
 
   return (
-    <Box
-      sx={{
-        display: "inline-block",
-        overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
-        width: "500px",
-        height: "500px",
+    <Box>
+      <Box
+        sx={{
+          display: "inline-block",
+          // overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
+          overflow: 'scroll',
+          width: "500px",
+          height: "500px",
 
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        position: "relative", // 子要素を正しく配置するために設定
-        transition: "transform 0.3s ease-in-out",
-        //transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
-        transformOrigin: "top left", // ズーム時の中心を指定
-      }}
-    >
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} >
-        <Box>
-          <Box
-            sx={{
-              position: "absolute",
-              zIndex: 100, // 子要素を手前に表示するために必要
-            }}
-          >
-            {dndDraggableNumberList.map((dndDraggableNumber, index) => (
-              <Box key={index}>
-                <DndGetLocationDraggableNumber
-                  key={dndDraggableNumber.id}
-                  id={dndDraggableNumber.id}
-                  dropPosition={{
-                    x: dndDraggableNumber.x,
-                    y: dndDraggableNumber.y,
-                  }}
-                  zoomNum={zoomNum}
-                />
-              </Box>
-            ))}
-          </Box>
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          position: "relative", // 子要素を正しく配置するために設定
+          transition: "transform 0.3s ease-in-out",
+          //transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+          transformOrigin: "top left", // ズーム時の中心を指定
+        }}
+      >
+        <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} collisionDetection={rectIntersection}>
+
           <Box>
-            <DndGetLocationDroppableImage
-              isZoomed={isZoomed}
-              isPdf={isPdf}
-            />
-          </Box>
-          {/* ドロップ後のアニメーションを無効化 */}
-          <DragOverlay dropAnimation={null}  >
-            {/* activeIdに一致する要素をレンダリング */}
-            {activeId && (
-              <DndGetLocationDraggableNumber
-                id={parseInt(activeId.toString().replace('number-', ''), 10)}
-                zoomNum={zoomNum}
-                dropPosition={{
-                  x: dndDraggableNumberList.find(
-                    (dndDraggableNumber) =>
-                      `number-${dndDraggableNumber.id}` === activeId
-                  )?.x || 0,
-                  // activeIdに一致する要素の位置を取得
-                  // todo: 長いので関数化する必要あり
-                  y: dndDraggableNumberList.indexOf(
-                    dndDraggableNumberList.find(
-                      (dndDraggableNumber) =>
-                        `number-${dndDraggableNumber.id}` === activeId
-                      // overlayする要素について、クリック時に少し下にズレる。
-                      // ズレは、配列要素が大きくなるほど大きくなるため、24を掛けて調整
-                    ) || { id: 0, x: 0, y: 0 }) * -24 + (dndDraggableNumberList.find(
-                      (dndDraggableNumber) =>
-                        `number-${dndDraggableNumber.id}` === activeId
-                    )?.y || 0)
-
-                }}
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: 100, // 子要素を手前に表示するために必要
+              }}
+            >
+              {dndDraggableNumberList.map((dndDraggableNumber, index) => (
+                <Box key={index}>
+                  <DndGetLocationDraggableNumber
+                    key={dndDraggableNumber.id}
+                    id={dndDraggableNumber.id}
+                    dropPosition={{
+                      x: dndDraggableNumber.x,
+                      y: dndDraggableNumber.y,
+                    }}
+                    zoomNum={zoomNum}
+                  />
+                </Box>
+              ))}
+            </Box>
+            <Box>
+              <DndGetLocationDroppableImage
+                isZoomed={isZoomed}
+                isPdf={isPdf}
               />
-            )}
-          </DragOverlay>
+            </Box>
+            {/* ドロップ後のアニメーションを無効化 */}
 
-        </Box>
-      </DndContext>
+          </Box>
+
+        </DndContext>
+      </Box>
     </Box>
+
   );
 };
 
+
 export default DndGetLocationSection;
+
+import { useDroppable, useDraggable } from "@dnd-kit/core";
+
+const DroppableItem = () => {
+  const { isOver, setNodeRef } = useDroppable({ id: "temp" });
+  return (
+    <Box
+      ref={setNodeRef}
+      sx={{
+        width: "100px",
+        height: "100px",
+        backgroundColor: "lightblue",
+      }}
+    >
+      DroppableItem
+    </Box>
+  );
+}
+
+const DraggableItem = () => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: "temp-draggable",
+  });
+  return (
+    <Box
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      sx={{
+        backgroundColor: "lightgreen",
+        transform: `translate3d(${transform?.x}px, ${transform?.y}px, 0)`,
+      }}
+    >
+      DraggableItem
+    </Box>
+  );
+}

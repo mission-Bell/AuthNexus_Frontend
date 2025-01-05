@@ -37,30 +37,35 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
   // ドラッグ可能な要素の位置もズームして表示する
   const handleZoomIn = () => {
     // 全てのドラッグ可能な要素について、x,yを1.5倍にする
-    // const newDndDraggableNumberList = dndDraggableNumberList.map(
-    //   (dndDraggableNumber) => ({
-    //     ...dndDraggableNumber,
-    //     x: dndDraggableNumber.x * 1.5,
-    //     y: dndDraggableNumber.y * 1.5,
-    //   })
-    // );
-    // setDndDraggableNumberList(newDndDraggableNumberList);
-    setIsZoomed(true);
-    setZoomNum(1.5);
+    if (!isZoomed) {
+      const newDndDraggableNumberList = dndDraggableNumberList.map(
+        (dndDraggableNumber) => ({
+          ...dndDraggableNumber,
+          x: dndDraggableNumber.x * 1.5,
+          y: dndDraggableNumber.y * 1.5,
+        })
+      );
+      setDndDraggableNumberList(newDndDraggableNumberList);
+      setIsZoomed(true);
+      // setZoomNum(1.5);
+    }
+
   };
 
   const handleZoomOut = () => {
-    setIsZoomed(false);
     // 全てのドラッグ可能な要素について、x,yを1.5除算する
-    // const newDndDraggableNumberList = dndDraggableNumberList.map(
-    //   (dndDraggableNumber) => ({
-    //     ...dndDraggableNumber,
-    //     x: dndDraggableNumber.x / 1.5,
-    //     y: dndDraggableNumber.y / 1.5,
-    //   })
-    // );
-    // setDndDraggableNumberList(newDndDraggableNumberList);
-    setZoomNum(1);
+    if (isZoomed) {
+      const newDndDraggableNumberList = dndDraggableNumberList.map(
+        (dndDraggableNumber) => ({
+          ...dndDraggableNumber,
+          x: dndDraggableNumber.x / 1.5,
+          y: dndDraggableNumber.y / 1.5,
+        })
+      );
+      setDndDraggableNumberList(newDndDraggableNumberList);
+      setIsZoomed(false);
+      // setZoomNum(1);
+    }
   };
 
   return (
@@ -68,6 +73,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
       {/* <Box sx={{ position: "absolute", left: `${dndTest}px` }}>
         template{dndTest}
       </Box> */}
+
       <Grid container spacing={2}>
         <Grid size={6}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -98,6 +104,7 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
           />
         </Grid>
         <Grid size={6}>
+
           <DndGetLocationXYInfoColumn index="No." x="x軸" y="y軸" />
           {dndDraggableNumberList.map((dndDraggableNumber) => (
             <DndGetLocationXYInfoColumn
@@ -107,6 +114,17 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
               y={dndDraggableNumber.y.toString()}
             />
           ))}
+          <Box>
+            <Box>
+              <DndContext onDragEnd={(event) => console.log(event)}>
+                <DroppableItem />
+                <DraggableItem />
+
+              </DndContext>
+
+            </Box>
+
+          </Box>
         </Grid>
       </Grid>
     </div>
@@ -114,3 +132,40 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
 };
 
 export default DndGetLocationTemplate;
+
+import { useDroppable, useDraggable, DndContext } from "@dnd-kit/core";
+
+const DroppableItem = () => {
+  const { isOver, setNodeRef } = useDroppable({ id: "temp" });
+  return (
+    <Box
+      ref={setNodeRef}
+      sx={{
+        width: "100px",
+        height: "100px",
+        backgroundColor: "lightblue",
+      }}
+    >
+      DroppableItem
+    </Box>
+  );
+}
+
+const DraggableItem = () => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: "temp-draggable",
+  });
+  return (
+    <Box
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      sx={{
+        backgroundColor: "lightgreen",
+        transform: `translate3d(${transform?.x}px, ${transform?.y}px, 0)`,
+      }}
+    >
+      DraggableItem
+    </Box>
+  );
+}

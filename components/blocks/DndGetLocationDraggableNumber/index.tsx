@@ -29,9 +29,10 @@ const DndGetLocationDraggableNumber = ({
         // 右上からの位置で指定する
         // zoom、zoom outの場合は、zoomNumを掛ける
         sx={{
-          position: 'absolute',
-          left: `${dropPosition.x * zoomNum}px`,
-          top: `${dropPosition.y * zoomNum}px`,
+          // position: 'absolute',
+          position: 'relative',
+          left: `${dropPosition.x}px`,
+          top: `${dropPosition.y}px`,
           backgroundColor: 'red',
           opacity: isDragging ? 0.5 : 1,
         }}
