@@ -1,0 +1,27 @@
+{
+  "name": "index",
+  "elements": [
+    {
+      "type": "TextField",
+      "label": "",
+      "attributes": {
+        "id": "outlined-basic",
+        "type": "text",
+        "name": "username",
+        "variant": "outlined",
+        "fullWidth": true
+      }
+    },
+    {
+      "type": "TextField",
+      "label": "",
+      "attributes": {
+        "id": "outlined-basic",
+        "type": "password",
+        "name": "password",
+        "variant": "outlined",
+        "fullWidth": true
+      }
+    }
+  ]
+}
