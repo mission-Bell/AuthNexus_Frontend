@@ -4,19 +4,7 @@ import DndGetLocationDraggableNumber from "@/components/blocks/DndGetLocationDra
 import DndGetLocationDroppableImage from "@/components/blocks/DndGetLocationDroppableImage";
 import { DndDraggableNumber } from "@/components/templates/DndGetLocationTemplate";
 import Box from "@mui/material/Box";
-/*
- * DndGetLocationSection
- * ドラッグした要素のドロップ位置を取得するサンプル
- *  - DndGetLocationDraggableNumber: ドラッグ可能な要素
- * - DndGetLocationDroppableImage: ドロップ可能な要素
- * - ドラッグした要素のドロップ位置を取得して、次のドラッグの初期位置として使用
- * - DndContext: ドラッグアンドドロップのコンテキスト
- * - onDragEnd: ドラッグ終了時のイベント
- * - dropPosition: ドロップ位置
- * - handleDragEnd: ドラッグ終了時の処理
- * - setDropPosition: ドロップ位置を更新する関数
- * - return: ドラッグアンドドロップのコンテキストを提供するコンポーネント
- */
+
 const DndGetLocationSection = ({
   dndDraggableNumberList,
   setDndDraggableNumberList,
@@ -32,6 +20,11 @@ const DndGetLocationSection = ({
   isZoomed: boolean;
   isPdf: boolean;
 }) => {
+  const [droppableItemSize, setDroppableItemSize] = React.useState<{ width: number, height: number }>({ width: 500, height: 500 });
+
+  const handleSetSize = (width: number, height: number) => {
+    setDroppableItemSize({ width, height });
+  }
 
   // ドラッグ中の要素のIDを保持。DragOverlayでドラッグ中の要素の位置を取得するために使用
   const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null);
@@ -40,21 +33,13 @@ const DndGetLocationSection = ({
   const handleDragEnd = (event: DragEndEvent) => {
     // ドラッグ中の要素を初期化
     setActiveId(null);
-    console.log('event', event);
-    // ドロップした位置がドロップ可能要素でない場合は更新しない。
-    if (!event.over) {
-      return;
-    }
+
+    // ドロップ可能要素のサイズを移動距離がオーバーしていないか確認
+
+
     // ドロップ位置を保存して、次のドラッグの初期位置として使用
     const { x, y } = event.delta;
     // ドロップ位置を更新
-    // x,yの値は、現在位置からの差分なので、前回の値に加算する必要がある
-    // 例: 前回x=10, y=20の場合、ドラッグした位置がx=4, y=30の場合、
-    // x=10+4=14, y=20+30=50ポジションとなる
-    // 配列から特定の値を持つ要素を抽出
-    // const targetItem = dndDraggableNumberList.find(
-    //   (dndDraggableNumber) => dndDraggableNumber.id === event.active.id
-    // );
     const targetItem = dndDraggableNumberList.find(
       (dndDraggableNumber) =>
         `number-${dndDraggableNumber.id}` === event.active.id
@@ -63,12 +48,17 @@ const DndGetLocationSection = ({
     if (!targetItem) {
       return;
     }
+
     // x,y: 移動距離を元の値に加算しであたらしい位置を計算
     const newItem: DndDraggableNumber = {
       id: targetItem.id,
       x: x + targetItem.x,
       y: y + targetItem.y,
     };
+
+    if (newItem.x < 0 || newItem.x > droppableItemSize.width || newItem.y < 0 || newItem.y > droppableItemSize.height) {
+      return;
+    }
     // newItemを使って新しいdndDraggableNumberListを作成
     // 既存の要素の場合は、新しい位置に更新
     // 新しい要素の場合は、新しい要素を追加
@@ -81,31 +71,31 @@ const DndGetLocationSection = ({
 
   // ドラッグ開始時の処理
   const handleDragStart = (event: DragStartEvent) => {
-    // ドラッグ中の要素のIDを更新
+    // // ドラッグ中の要素のIDを更新
     setActiveId(event.active.id);
 
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        overflow: 'scroll',
+      }}>
       <Box
         sx={{
           display: "inline-block",
-          // overflow: isZoomed ? "scroll" : "hidden", // ズーム時にスクロール可能に
-          overflow: 'scroll',
-          width: "500px",
-          height: "500px",
-
+          width: droppableItemSize.width,
+          height: droppableItemSize.height,
+          // maxWidth: "100%",
+          // maxHeight: "100%",
           border: "1px solid #ccc",
           borderRadius: "8px",
-          position: "relative", // 子要素を正しく配置するために設定
           transition: "transform 0.3s ease-in-out",
-          //transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
+          transform: isZoomed ? "scale(1.5)" : "scale(1)", // ズームの制御
           transformOrigin: "top left", // ズーム時の中心を指定
         }}
       >
         <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} collisionDetection={rectIntersection}>
-
           <Box>
             <Box
               sx={{
@@ -114,33 +104,55 @@ const DndGetLocationSection = ({
               }}
             >
               {dndDraggableNumberList.map((dndDraggableNumber, index) => (
-                <Box key={index}>
-                  <DndGetLocationDraggableNumber
-                    key={dndDraggableNumber.id}
-                    id={dndDraggableNumber.id}
-                    dropPosition={{
-                      x: dndDraggableNumber.x,
-                      y: dndDraggableNumber.y,
-                    }}
-                    zoomNum={zoomNum}
-                  />
-                </Box>
+                <DndGetLocationDraggableNumber
+                  key={dndDraggableNumber.id}
+                  id={dndDraggableNumber.id}
+                  dropPosition={{
+                    x: dndDraggableNumber.x,
+                    y: dndDraggableNumber.y,
+                  }}
+                  zoomNum={zoomNum}
+                />
               ))}
             </Box>
-            <Box>
+            <DragOverlay
+              dropAnimation={null}
+              // 画面上の表示位置は、position: 'absolute' で指定する
+              style={{
+                position: "relative",
+                zIndex: 1000, // 子要素を手前に表示するために必要
+                top:
+                  dndDraggableNumberList.find(
+                    (dndDraggableNumber) =>
+                      `number-${dndDraggableNumber.id}` === activeId
+                  )?.y || 0,
+                left:
+                  dndDraggableNumberList.find(
+                    (dndDraggableNumber) =>
+                      `number-${dndDraggableNumber.id}` === activeId
+                  )?.x || 0,
+
+              }}>
+              {activeId ? (
+                <DndGetLocationDraggableNumber
+                  id={activeId}
+                  dropPosition={{ x: 0, y: 0 }}
+                  zoomNum={zoomNum}
+                />
+              ) : null}
+            </DragOverlay>
+            <Box sx={{ zIndex: 1 }}>
               <DndGetLocationDroppableImage
                 isZoomed={isZoomed}
-                isPdf={isPdf}
+                isPdf={true}
+                size={droppableItemSize}
+                handleSetSize={handleSetSize}
               />
             </Box>
-            {/* ドロップ後のアニメーションを無効化 */}
-
           </Box>
-
         </DndContext>
       </Box>
     </Box>
-
   );
 };
 
@@ -148,6 +160,7 @@ const DndGetLocationSection = ({
 export default DndGetLocationSection;
 
 import { useDroppable, useDraggable } from "@dnd-kit/core";
+import { set } from "react-hook-form";
 
 const DroppableItem = () => {
   const { isOver, setNodeRef } = useDroppable({ id: "temp" });

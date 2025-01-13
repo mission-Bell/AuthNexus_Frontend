@@ -13,31 +13,32 @@ const DndGetLocationDraggableNumber = ({
   id,
   zoomNum
 }: DraggableNumberProps) => {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `number-${id}`,
   });
+
 
   return (
     <Box
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      sx={{ display: "inline-block", zIndex: 1000, poxition: 'fixed' }}
+      sx={{ display: "inline-block", zIndex: 1000, position: 'fixed' }}
+
     >
       <Box
         // 画面上の表示位置は、position: 'absolute' で指定する
         // 右上からの位置で指定する
         // zoom、zoom outの場合は、zoomNumを掛ける
         sx={{
-          // position: 'absolute',
-          position: 'relative',
+          position: 'absolute',
           left: `${dropPosition.x}px`,
           top: `${dropPosition.y}px`,
+          display: isDragging ? "none" : 'blcok',
           backgroundColor: 'red',
-          opacity: isDragging ? 0.5 : 1,
         }}
       >
-        number {id}
+        {id}
       </Box>
     </Box>
   );

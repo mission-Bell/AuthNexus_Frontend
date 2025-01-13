@@ -23,6 +23,8 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
 
   const [isZoomed, setIsZoomed] = useState(false);
 
+  const [nowPdf, setNowPdf] = useState(isPdf);
+
   const handleAddDraggableNumber = () => {
     const newId = dndDraggableNumberList.length + 1;
     const newDndDraggableNumberList = [
@@ -41,8 +43,8 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
       const newDndDraggableNumberList = dndDraggableNumberList.map(
         (dndDraggableNumber) => ({
           ...dndDraggableNumber,
-          x: dndDraggableNumber.x * 1.5,
-          y: dndDraggableNumber.y * 1.5,
+          x: dndDraggableNumber.x,
+          y: dndDraggableNumber.y,
         })
       );
       setDndDraggableNumberList(newDndDraggableNumberList);
@@ -58,8 +60,8 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
       const newDndDraggableNumberList = dndDraggableNumberList.map(
         (dndDraggableNumber) => ({
           ...dndDraggableNumber,
-          x: dndDraggableNumber.x / 1.5,
-          y: dndDraggableNumber.y / 1.5,
+          x: dndDraggableNumber.x,
+          y: dndDraggableNumber.y,
         })
       );
       setDndDraggableNumberList(newDndDraggableNumberList);
@@ -75,8 +77,8 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
       </Box> */}
 
       <Grid container spacing={2}>
-        <Grid size={6}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Grid size={6} bgcolor={"lightblue"}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }} bgcolor={"lightblue"}>
             <DndGetLocationCommonButton
               label="追加"
               onClick={() => handleAddDraggableNumber()}
@@ -93,6 +95,11 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
                 onClick={() => handleZoomOut()}
                 icon={<LocalShippingIcon />}
               />
+              <DndGetLocationCommonButton
+                label="pdf"
+                onClick={() => { setNowPdf(!nowPdf) }}
+                icon={<LocalShippingIcon />}
+              />
             </Box>
           </Box>
           <DndGetLocationSection
@@ -100,11 +107,10 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
             setDndDraggableNumberList={setDndDraggableNumberList}
             isZoomed={isZoomed}
             zoomNum={zoomNum}
-            isPdf={isPdf}
+            isPdf={nowPdf}
           />
         </Grid>
-        <Grid size={6}>
-
+        <Grid size={6} bgcolor={"lightgreen"}>
           <DndGetLocationXYInfoColumn index="No." x="x軸" y="y軸" />
           {dndDraggableNumberList.map((dndDraggableNumber) => (
             <DndGetLocationXYInfoColumn
@@ -114,17 +120,6 @@ const DndGetLocationTemplate = ({ isPdf, numberList }: { isPdf: boolean, numberL
               y={dndDraggableNumber.y.toString()}
             />
           ))}
-          <Box>
-            <Box>
-              <DndContext onDragEnd={(event) => console.log(event)}>
-                <DroppableItem />
-                <DraggableItem />
-
-              </DndContext>
-
-            </Box>
-
-          </Box>
         </Grid>
       </Grid>
     </div>
