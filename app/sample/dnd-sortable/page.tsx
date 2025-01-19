@@ -184,7 +184,7 @@ const Home = () => {
               id={field.id}
               order={index + 1}
               control={control}
-              index={fdfd}
+              index={index}
               remove={remove}
               isDragging={activeId === field.id}
             />

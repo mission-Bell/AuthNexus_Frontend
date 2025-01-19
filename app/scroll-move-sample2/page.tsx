@@ -35,7 +35,7 @@ const DroppableImage = () => {
     <div
       ref={(node) => {
         setDroppableRef(node);
-        droppableRef.current = node;
+        // droppableRef.current = node;
       }}
       onScroll={handleScroll}
       style={{

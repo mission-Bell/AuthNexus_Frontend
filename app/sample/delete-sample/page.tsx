@@ -17,7 +17,7 @@ type FormValues = {
 };
 
 const DeleteSample: React.FC = () => {
-  const { control, register, handleSubmit, setValue, getValues } = useForm<FormValues>({
+  const { control, setValue, getValues } = useForm<FormValues>({
     defaultValues: {
       items: [
         { id: 1, value: '登録済み要素1', isRegistered: true },

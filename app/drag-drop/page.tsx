@@ -1,7 +1,5 @@
 import React from "react";
-import DD_1 from "@/components/old/DD_1";
-import DD_2 from "@/components/old/DD_2";
-import DD_3 from "@/components/old/DD_3";
+
 import MyServer from "@/components/old/DD_4/MyServer";
 import { Box } from "@mui/material";
 

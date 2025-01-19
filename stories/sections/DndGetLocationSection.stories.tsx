@@ -51,8 +51,8 @@ const menuButtonList: MenuButtonProps[] = [
   },
 ];
 
-export const Ver1: Story = {
-  args: {
-    menuButtonList,
-  },
-};
+// export const Ver1: Story = {
+//   args: {
+//     menuButtonList,
+//   },
+// };

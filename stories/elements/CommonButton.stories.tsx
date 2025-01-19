@@ -11,38 +11,38 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Ver1: Story = {
-  args: {
-    label: "Button",
-    onClick: () => {
-      console.log("Button clicked");
-    },
-  },
-};
+// export const Ver1: Story = {
+//   args: {
+//     label: "Button",
+//     onClick: () => {
+//       console.log("Button clicked");
+//     },
+//   },
+// };
 
-export const LoginButton: Story = {
-  args: {
-    label: "Login",
-    onClick: () => {
-      console.log("Login clicked");
-    },
-  },
-};
+// export const LoginButton: Story = {
+//   args: {
+//     label: "Login",
+//     onClick: () => {
+//       console.log("Login clicked");
+//     },
+//   },
+// };
 
-export const LogoutButton: Story = {
-  args: {
-    label: "Logout",
-    onClick: () => {
-      console.log("Logout clicked");
-    },
-  },
-};
+// export const LogoutButton: Story = {
+//   args: {
+//     label: "Logout",
+//     onClick: () => {
+//       console.log("Logout clicked");
+//     },
+//   },
+// };
 
-export const RegisterButton: Story = {
-  args: {
-    label: "Register",
-    onClick: () => {
-      console.log("Register clicked");
-    },
-  },
-};
+// export const RegisterButton: Story = {
+//   args: {
+//     label: "Register",
+//     onClick: () => {
+//       console.log("Register clicked");
+//     },
+//   },
+// };

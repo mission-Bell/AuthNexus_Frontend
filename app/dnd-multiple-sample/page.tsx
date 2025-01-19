@@ -4,7 +4,6 @@ import {
   DndContext,
   DragEndEvent,
   useDraggable,
-  useDroppable,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 

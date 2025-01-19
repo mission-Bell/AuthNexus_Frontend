@@ -135,7 +135,7 @@ const DndGetLocationSection = ({
               }}>
               {activeId ? (
                 <DndGetLocationDraggableNumber
-                  id={activeId}
+                  id={activeId as number}
                   dropPosition={{ x: 0, y: 0 }}
                   zoomNum={zoomNum}
                 />

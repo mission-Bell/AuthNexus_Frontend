@@ -46,8 +46,8 @@ const DndSortableTable: React.FC = () => {
     console.log(active, over);
     if (active && over && active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.indexOf(active.data);
-        const newIndex = items.indexOf(over.id as string);
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });

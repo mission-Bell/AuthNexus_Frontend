@@ -11,7 +11,7 @@ const DraggableGroup: React.FC = () => {
     setActiveId(event.active.id);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = () => {
     // ドラッグ終了時に要素をリストから削除
     setItems((prevItems) =>
       prevItems.filter((item) => item !== activeId)

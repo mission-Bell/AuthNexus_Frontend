@@ -3,7 +3,7 @@ import MenuButton from "@/components/blocks/MenuButton";
 
 import Grid from "@mui/material/Grid2";
 interface MenuButtonProps {
-  icon: React.ReactNode;
+  icon: React.ReactElement;
   label: string;
   onClick: () => void;
 }
@@ -21,7 +21,8 @@ const RowOfMenuButton = ({ menuButtonList }: RowOfMenuButtonProps) => {
             <MenuButton
               icon={item.icon}
               label={item.label}
-              onClick={item.onClick}
+              link="#"
+            // onClick={item.onClick}
             />
           </Grid>
         ))}

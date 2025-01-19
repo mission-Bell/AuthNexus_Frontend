@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { getData, getData2 } from "@/actions/SendServer";
-import { Users } from "@/actions/Sample";
+import { getData2 } from "@/actions/SendServer";
+import { Users } from "@/actions/sample";
 import SampleComponent2 from "@/components/SampleComponent2";
 const SampleComponent1 = ({ paramUsers }: { paramUsers: Users[] }) => {
   const [users, setUsers] = React.useState<Users[]>(paramUsers);

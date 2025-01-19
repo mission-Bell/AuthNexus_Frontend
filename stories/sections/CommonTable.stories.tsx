@@ -36,7 +36,7 @@ interface AAAModel {
   carbs: number;
   protein: number;
 }
-å;
+
 
 const rows: AAAModel[] = [
   {
