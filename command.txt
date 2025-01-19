@@ -1,0 +1,13 @@
+build コマンド
+
+ yarn next build --no-lint
+
+ yarn install --production
+
+ yarn start
+
+ 持っていくもの
+ ・.next
+ ・package.json
+ ・yarn.lock
+ 
