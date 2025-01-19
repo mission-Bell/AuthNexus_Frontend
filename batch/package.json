@@ -1,0 +1,17 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.731.1",
+    "@types/aws-lambda": "^8.10.147",
+    "@types/node": "^22.10.7",
+    "esbuild": "^0.24.2"
+  },
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "node build.js",
+    "postbuild": "cd dist && zip -r index.zip index.js*"
+  }
+}
